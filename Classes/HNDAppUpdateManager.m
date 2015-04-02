@@ -38,8 +38,8 @@ static NSString* const HNDUpdateUrlKey = @"updateUrl";
     
     [[AVENetworkManager sharedManager] GET:self.versionURL.absoluteString
                                 parameters:nil
-                              networkToken:nil
                                   priority:[AVENetworkPriority priorityWithLevel:AVENetworkPriorityLevelHigh]
+                              networkToken:nil
                                    builder:builder].then(^(NSDictionary* responseObject) {
         NSString* serverVersion = responseObject[HNDLatestVersionKey];
         if (serverVersion) {
