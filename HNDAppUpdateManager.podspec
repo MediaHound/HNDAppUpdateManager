@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "HNDAppUpdateManager"
-  s.version          = "0.0.2"
+  s.version          = "0.0.3"
   s.summary          = "HNDAppUpdateManager"
   s.homepage         = ""
   s.license          = 'MIT'
@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.source_files = "Classes/**/*.{h,m}"
 
   s.dependency 'AFNetworking'
-  s.dependency 'AgnosticLogger'
+  # s.dependency 'AgnosticLogger'
   s.dependency 'Avenue'
 end
