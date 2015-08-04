@@ -9,6 +9,24 @@
 
 **TBD**
 
+## version.json
+
+The App Update Manager requests a version JSON file, which you host on your server. The JSON file contains 2 fields:
+
+Field         | Description                                   | Example
+------------- | --------------------------------------------- | ------------
+latestVersion | A full version string including build number. | `"1.2.0.50"`
+updateUrl     | A URL which will initiate update. Can be an enterprise `itms-services` URL or an app store link | `"itms-services://?action=download-manifest&url=https://myapp.com/app.plist"`
+
+Here is an example JSON file:
+
+```json
+{ 
+    "latestVersion": "1.2.0.50",
+    "updateUrl": "itms-services://?action=download-manifest&url=https://myapp.com/app.plist"
+}
+```
+
 ## Installation
 
 HNDAppUpdateManager is available through [CocoaPods](http://cocoapods.org). To install
