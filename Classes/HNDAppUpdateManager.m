@@ -16,6 +16,13 @@ static NSString* const HNDRequireUpdateBeforeKey = @"requireUpdateBefore";
 static NSString* const HNDUpdateUrlKey = @"updateUrl";
 
 
+@interface HNDAppUpdateManager ()
+
+@property (strong, nonatomic, readonly) NSURL* versionURL;
+
+@end
+
+
 @implementation HNDAppUpdateManager
 
 - (instancetype)initWithVersionURL:(NSURL*)versionURL
@@ -28,8 +35,6 @@ static NSString* const HNDUpdateUrlKey = @"updateUrl";
 
 - (void)checkForUpdate
 {
-    // AGLLogVerbose(@"[HNDAppUpdateManager] Checking for update at URL: %@", self.versionURL);
-    
     NSString* currentVersion = [self appVersion];
     
     AVEHTTPRequestOperationBuilder* builder = [[AVEHTTPRequestOperationBuilder alloc] init];
@@ -43,37 +48,26 @@ static NSString* const HNDUpdateUrlKey = @"updateUrl";
                                    builder:builder].then(^(NSDictionary* responseObject) {
         NSString* serverVersion = responseObject[HNDLatestVersionKey];
         if (serverVersion) {
-            // AGLLogVerbose(@"[HNDAppUpdateManager] Current Version: %@. Server Version: %@", currentVersion, serverVersion);
             if ([self compareVersion:serverVersion toVersion:currentVersion] == NSOrderedDescending) {
                 
                 NSString* requireUpdateBefore = responseObject[HNDRequireUpdateBeforeKey];
                 const BOOL requireUpdate = (requireUpdateBefore && [self compareVersion:requireUpdateBefore toVersion:currentVersion] == NSOrderedDescending);
-                
-                // AGLLogVerbose(@"[HNDAppUpdateManager] Current Version: %@. Require Update Before Version: %@", currentVersion, requireUpdateBefore);
                 
                 NSString* updateUrlString = responseObject[HNDUpdateUrlKey];
                 if (updateUrlString) {
                     [self newerVersionFoundWithRequiredUpdate:requireUpdate
                                                     updateUrl:[NSURL URLWithString:updateUrlString]];
                 }
-                else {
-                    // AGLLogError(@"[HNDAppUpdateManager] No Update URL found");
-                }
-            }
-            else {
-                // AGLLogVerbose(@"[HNDAppUpdateManager] Up to date");
             }
         }
     }).catch(^(NSError* error) {
-        // AGLLogError(@"[HNDAppUpdateManager] Update error: %@", error);
+        // Silently allow failures
     });
 }
 
 - (void)newerVersionFoundWithRequiredUpdate:(BOOL)requireUpdate 
                                   updateUrl:(NSURL*)updateUrl
 {
-    // AGLLogVerbose(@"[HNDAppUpdateManager] New version available -- require update: %@ -- update url: %@", @(requireUpdate), updateUrl);
-    
     [self.delegate appUpdateManager:self promptForUpdateForcibly:requireUpdate updateBlock:^{
         [self updateWithUrl:updateUrl];
     }];
@@ -81,7 +75,6 @@ static NSString* const HNDUpdateUrlKey = @"updateUrl";
 
 - (void)updateWithUrl:(NSURL*)updateUrl
 {
-    // AGLLogVerbose(@"[HNDAppUpdateManager] Performing update");
     [[UIApplication sharedApplication] openURL:updateUrl];
 }
 
