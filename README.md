@@ -7,7 +7,16 @@
 
 ## What is HNDAppUpdateManager
 
-**TBD**
+HNDAppUpdateManager lets you easily add app update checking to your iOS apps. It supports App Store or Enterprise distribution. 
+
+## Installation
+
+HNDAppUpdateManager is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod "HNDAppUpdateManager"
+```
 
 ## version.json
 
@@ -27,14 +36,32 @@ Here is an example JSON file:
 }
 ```
 
-## Installation
+## Checking for updates
 
-HNDAppUpdateManager is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod "HNDAppUpdateManager"
+```objc
+NSURL* versionURL = [NSURL URLWithString:@"http://myapp.com/version.json"];
+HNDAppUpdateManager* updateManager = [[HNDAppUpdateManager alloc] initWithVersionURL:versionURL];
+updateManager.delegate = self;
+[updateManager checkForUpdate];
 ```
+
+```objc
+- (void)appUpdateManager:(HNDAppUpdateManager*)manager
+ promptForUpdateForcibly:(BOOL)forced 
+             updateBlock:(void(^)())updateBlock {
+    if (forced) {
+        // Show an alert and then call updateBlock()
+    }
+    else {
+        // Ask the user if they want to update.
+        // If they do, call updateBlock()
+    }
+}
+```
+
+## Fastlane integration
+
+If you use [Fastlane](https://github.com/KrauseFx/fastlane) for s3 Enterprise distrubution, you already get a `version.json` [generated for you automatically](https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md#aws-s3-distribution).
 
 ## Author
 
