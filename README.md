@@ -36,6 +36,10 @@ Here is an example JSON file:
 }
 ```
 
+### Fastlane integration
+
+If you use [Fastlane](https://github.com/KrauseFx/fastlane) for s3 Enterprise distrubution, you already get a `version.json` [generated for you automatically](https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md#aws-s3-distribution).
+
 ## Checking for updates
 
 ```objc
@@ -58,10 +62,6 @@ updateManager.delegate = self;
     }
 }
 ```
-
-## Fastlane integration
-
-If you use [Fastlane](https://github.com/KrauseFx/fastlane) for s3 Enterprise distrubution, you already get a `version.json` [generated for you automatically](https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md#aws-s3-distribution).
 
 ## Author
 
