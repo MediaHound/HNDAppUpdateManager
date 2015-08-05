@@ -20,19 +20,21 @@ pod "HNDAppUpdateManager"
 
 ## version.json
 
-The App Update Manager requests a version JSON file, which you host on your server. The JSON file contains 2 fields:
+The App Update Manager requests a version JSON file, which you host on your server. The JSON file contains 3 fields:
 
 Field         | Description                                   | Example
 ------------- | --------------------------------------------- | ------------
 latestVersion | A full version string including build number. | `"1.2.0.50"`
 updateUrl     | A URL which will initiate update. Can be an enterprise `itms-services` URL or an app store link | `"itms-services://?action=download-manifest&url=https://myapp.com/app.plist"`
+requireUpdateBefore | (Optional) A full version string that indicates when an update is required. Any version before this version will be required. | `"1.1.5.0" `
 
 Here is an example JSON file:
 
 ```json
 { 
     "latestVersion": "1.2.0.50",
-    "updateUrl": "itms-services://?action=download-manifest&url=https://myapp.com/app.plist"
+    "updateUrl": "itms-services://?action=download-manifest&url=https://myapp.com/app.plist",
+    "requireUpdateBefore": "1.1.5.0"
 }
 ```
 
@@ -41,6 +43,8 @@ Here is an example JSON file:
 If you use [Fastlane](https://github.com/KrauseFx/fastlane) for s3 Enterprise distrubution, you already get a `version.json` [generated for you automatically](https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md#aws-s3-distribution).
 
 ## Checking for updates
+
+You can then easily check for updates from inside your AppDelegate or wherever you choose:
 
 ```objc
 NSURL* versionURL = [NSURL URLWithString:@"http://myapp.com/version.json"];
